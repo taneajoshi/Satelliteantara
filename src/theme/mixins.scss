@@ -1,0 +1,13 @@
+//Override bootstrap mixing for validation states
+@mixin form-validation-state-selector($state) {
+    @if $state == "valid" or $state == "invalid" {
+      .was-validated #{if(&, "&", "")}:#{$state},
+      #{if(&, "&", "")}.is-#{$state}.is-touched {
+        @content;
+      }
+    } @else {
+      #{if(&, "&", "")}.is-#{$state}.is-touched {
+        @content;
+      }
+    }
+}  

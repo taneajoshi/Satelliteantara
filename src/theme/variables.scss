@@ -1,0 +1,61 @@
+$prefix: "app-";
+$enable-cssgrid: true;
+
+//Bootstrap overrides for our theme
+
+// Color Theme
+$primary: #6A69FA;
+$secondary: #64ffda;
+$body-bg: #191f2c;
+$body-color: #191f2c;
+$tertiary: #7C878E;
+$light: #F8F9FB !default;
+$dark: #191f2c;
+$info: #0d6efd;
+$text-muted: #5F6D7E;
+$stroke-light: #C7C7D1;
+$disabled-bg: #c7c7d128;
+
+//Button Theme
+$btn-font-size: 14px;
+$btn-border-radius: 6px;
+$btn-font-weight: 500;
+$btn-line-height: 20px;
+$btn-padding-y: 10px;
+$btn-padding-x: 16px;
+
+// Typography
+$font-family-base: Inter, "Lucida Grande", sans-serif;
+$h1-font-size: 24px !default;
+$h2-font-size: 18px !default;
+$h3-font-size: 14px !default;
+$h4-font-size: 12px !default;
+$headings-font-weight: 600 !default;
+
+//Form Input
+$input-padding-y: 12px;
+$input-padding-x: 18px;
+$input-font-size: 16px;
+$input-color: $text-muted;
+$input-line-height: 1.66;
+$input-group-addon-bg: transparent;
+$input-group-addon-border-color: transparent;
+$form-label-font-size: 14px;
+$form-select-disabled-bg: $disabled-bg;
+$input-disabled-bg: $disabled-bg;
+$form-select-feedback-icon-padding-end: 64px;
+$form-select-feedback-icon-size: 14px;
+$form-select-indicator-padding : 45px;
+$input-height-inner-half: 14px;
+
+//Pagination
+$pagination-border-width: 0;
+$pagination-hover-color: $text-muted;
+$pagination-hover-bg: transparent;
+$pagination-active-color: $primary;
+$pagination-active-bg: #e6e9ec;
+
+//Global Variables
+$sidebar-width: 223px;
+$border-radius: 8px;
+$gradient: linear-gradient(120deg, #9026FF, #00C7F7);

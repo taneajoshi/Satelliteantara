@@ -1,0 +1,43 @@
+.btn-primary {
+    --#{$prefix}btn-hover-bg: #304658;
+    --#{$prefix}btn-hover-border-color: #304658;
+    --#{$prefix}btn-disabled-bg: #7c878e;
+    --#{$prefix}btn-disabled-border-color: #7c878e;
+  }
+
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .btn {
+    &.text-primary,
+    &.text-secondary {
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+   }
+
+   //Override input group style
+   .input-group {
+    input {
+      padding-left: 40px;
+    }
+
+    .input-group-text {
+      z-index: 9;
+    }
+   }
+
+  .form-select,
+  .form-control {
+    &[disabled] {
+      cursor: not-allowed;
+    }
+  }
