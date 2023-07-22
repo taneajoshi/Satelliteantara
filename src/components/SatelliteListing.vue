@@ -10,13 +10,14 @@
         <ErrorComponent :form-control="filterForm.get('search')">
           <div class="input-group position-relative">
             <input
+              ref="searchInput"
               class="form-control rounded-3"
               type="text"
               placeholder="Search"
               aria-label="Search"
               v-model="filterForm.get('search').value"
               v-input-validity="filterForm.get('search')"
-              @input="getFilteredSatellites"
+              @keydown="debouncedSearch"
             />
             <span
               class="input-group-text position-absolute text-secondary translate-middle-y top-50"
@@ -122,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { finalize, switchMap } from "rxjs";
+import { BehaviorSubject, debounceTime, finalize, switchMap } from "rxjs";
 import { onMounted, ref, watch } from "vue";
 import { applicationContainer } from "../container/container";
 import { SatelliteInterface } from "../interfaces/SatelliteInterface";
@@ -150,6 +151,7 @@ const route = useRoute();
 const router = useRouter();
 const filterOptions = ref<Filter>({});
 const searchParams = new URLSearchParams(route.query as any);
+const searchInputRef = ref<HTMLInputElement | null>(null);
 
 interface Filter {
   [key: string]: string | undefined;
@@ -159,6 +161,13 @@ onMounted(() => {
   loadSatellitesData();
   initFiltersFromRouteParams(route.query);
 });
+
+const searchInputValue$ = new BehaviorSubject<string>("");
+
+const debouncedSearch = () => {
+  const inputValue = searchInputRef.value?.value || "";
+  searchInputValue$.next(inputValue);
+};
 
 /**
  * Filter Form
@@ -258,10 +267,30 @@ function getFilteredSatellites() {
   router.push(`${currentPath}?${searchParams.toString()}`);
 }
 
+/**
+ * Subscribe to search input once input is ready
+ **/
+searchInputValue$.pipe(debounceTime(300)).subscribe(() => {
+  const filterValues = filterForm.getRawValue();
+  console.log("get filtered", filterValues);
+  const currentPath = route.path;
+
+  Object.entries(filterValues).forEach(([control, value]) => {
+    searchParams.set(control, value);
+    filterOptions.value[control] = value;
+  });
+
+  router.push(`${currentPath}?${searchParams.toString()}`);
+});
+
+/**
+ * Watch for route/params to change and then call the load filters
+ **/
 watch(route, () => loadSatellitesData(route.query), {
   immediate: true,
   deep: true,
 });
+
 watch(route, () => initFiltersFromRouteParams(route.query), {
   immediate: true,
   deep: true,
