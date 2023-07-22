@@ -2,6 +2,7 @@ import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import PageNotFound from "../views/PageNotFoundView.vue";
 import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
+import AnalyticsView from "../views/AnalyticsView.vue";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -11,6 +12,10 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/dashboard",
     component: DashboardView,
+  },
+  {
+    path: "/analytics",
+    component: AnalyticsView,
   },
   {
     path: "/:catchAll(.*)",

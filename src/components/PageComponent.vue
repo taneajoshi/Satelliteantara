@@ -1,6 +1,6 @@
 <template>
   <LeftMenuComponent />
-  <main class="d-flex flex-column vh-100">
+  <main class="d-flex flex-column min-vh-100">
     <HeaderComponent><slot name="pageTitle"></slot></HeaderComponent>
     <div class="content d-grid flex-grow-1 px-3 py-3 px-md-5 w-100">
       <slot></slot>

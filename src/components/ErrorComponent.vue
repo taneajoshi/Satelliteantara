@@ -78,8 +78,8 @@ const errors = computed<string[]>(() => {
           }`
         );
         break;
-      case ErrorKeys.MatchConfirmPassword:
-        errorValues.push("The password doesn't match.");
+      case ErrorKeys.NoWhiteSpace:
+        errorValues.push("Please enter a valid search query.");
         break;
       default:
         errorValues.push("This field is invalid.");
@@ -92,8 +92,10 @@ const errors = computed<string[]>(() => {
 <template>
   <slot></slot>
   <div class="invalid-feedback d-block" v-if="hasErrors">
-    <ul class="list-unstyled">
-      <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+    <ul class="list-unstyled mb-0">
+      <li v-for="(error, index) in errors" :key="index" class="h4 mb-0">
+        {{ error }}
+      </li>
     </ul>
   </div>
 </template>

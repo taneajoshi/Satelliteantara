@@ -1,13 +1,13 @@
 <template>
   <aside
     :class="[
-      'offcanvas offcanvas-start bg-dark py-4 sidebar-width border-0',
+      'offcanvas offcanvas-start bg-transparent py-4 sidebar-width border-0',
       isSidebarOpen ? 'show' : '',
     ]"
     :data-bs-backdrop="!isSidebarOpen"
-    tabindex="-1"
     id="offcanvasNavbar"
     aria-labelledby="offcanvasNavbarLabel"
+    :data-bs-scroll="isSidebarOpen"
   >
     <div class="offcanvas-header d-block px-4 py-0">
       <!-- App Logo -->
@@ -36,61 +36,67 @@
 
     <!-- Nav Items -->
     <nav>
-      <ul class="'list-unstyled mt-4 mb-0 overflow-x-auto d-flex flex-column',">
-        <li data-bs-dismiss="offcanvas">
+      <ul class="list-unstyled mt-4 mb-0 overflow-x-auto d-flex flex-column">
+        <li :data-bs-dismiss="dismiss">
           <RouterLink
-            to="/jobs"
-            class="text-decoration-none py-3 px-4 d-flex align-items-center text-muted"
+            to="/dashboard"
+            class="text-decoration-none py-3 px-4 d-flex align-items-center"
           >
-            <span class="icon-wrapper me-2 fs-6">
-              <font-awesome-icon icon="fa-solid fa-briefcase" />
+            <span class="icon-wrapper me-2 text-secondary fs-6">
+              <i class="bi bi-cpu"></i>
             </span>
-            <span class="h3 mb-0 lh-1 fw-medium">Jobs</span>
+            <span class="h3 mb-0 lh-1 fw-medium">Dashboard</span>
           </RouterLink>
         </li>
-        <li data-bs-dismiss="offcanvas">
+        <li :data-bs-dismiss="dismiss">
           <RouterLink
-            to="/profile"
-            class="text-decoration-none py-3 px-4 d-flex align-items-center text-muted"
+            to="/analytics"
+            class="text-decoration-none py-3 px-4 d-flex align-items-center"
           >
             <span class="icon-wrapper me-2 fs-6">
-              <font-awesome-icon icon="fa-solid fa-user" />
+              <i class="bi bi-bar-chart text-secondary"></i>
             </span>
-            <span class="h3 mb-0 lh-1 fw-medium">Profile</span>
+            <span class="h3 mb-0 lh-1 fw-medium">Analytics</span>
           </RouterLink>
         </li>
-        <li data-bs-dismiss="offcanvas">
+        <li :data-bs-dismiss="dismiss">
           <RouterLink
-            to="/settings"
-            class="text-decoration-none py-3 px-4 d-flex align-items-center text-muted"
+            to="/star-ship"
+            class="text-decoration-none py-3 px-4 d-flex align-items-center"
           >
             <span class="icon-wrapper me-2 fs-6">
-              <font-awesome-icon icon="fa-solid fa-gear" />
+              <i class="bi bi-rocket-fill text-secondary"></i>
             </span>
-            <span class="h3 mb-0 lh-1 fw-medium">Settings</span>
+            <span class="h3 mb-0 lh-1 fw-medium">Starship</span>
           </RouterLink>
         </li>
-
-        <li class="mt-auto d-flex align-items-center py-3 px-4">
-          <small
-            class="avatar me-2 rounded-5 h4 mb-0 fw-normal bg-primary text-white d-flex justify-content-center align-items-center"
+        <li :data-bs-dismiss="dismiss">
+          <RouterLink
+            to="/astronauts"
+            class="text-decoration-none py-3 px-4 d-flex align-items-center"
           >
-            {{ initials }}
-          </small>
-          <h3 class="text-muted text-break fw-medium text-capitalize mb-0">
-            User Name
-          </h3>
+            <span class="icon-wrapper me-2 fs-6">
+              <font-awesome-icon
+                icon="fa-solid fa-user-astronaut"
+                class="text-secondary"
+              />
+            </span>
+            <span class="h3 mb-0 lh-1 fw-medium">Astronauts</span>
+          </RouterLink>
         </li>
 
         <!-- Logout -->
-        <li data-bs-dismiss="offcanvas">
+        <li :data-bs-dismiss="dismiss" class="mt-auto">
           <button
             class="btn border-0 w-100 py-3 px-4 d-flex align-items-center"
           >
-            <span class="icon-wrapper me-2 fs-5 logout-icon">
-              <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
+            <span class="icon-wrapper me-2 logout-icon">
+              <font-awesome-icon
+                icon="fa-solid fa-arrow-right-from-bracket"
+                class="text-secondary fs-6"
+              />
             </span>
-            <span class="h3 text-secondary mb-0 lh-1 fw-medium"> Logout </span>
+            <span class="text-secondary mb-0 lh-1 fw-semibold"> Logout </span>
           </button>
         </li>
         <!-- /Logout -->
@@ -101,27 +107,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 
-const authUser = ref(null);
 const isSidebarOpen = ref(true);
+const dismiss = ref("none");
 
 onMounted(() => {
   handleResize();
   window.addEventListener("resize", handleResize);
 });
 
-const initials = computed<string>(() => {
-  const name = authUser.value?.profile.name;
-  const initialsMatch = name?.match(/\b(\w)/g);
-  return initialsMatch?.slice(0, 2).join("").toUpperCase() || "";
-});
-
 const handleResize = () => {
   if (window.matchMedia("(max-width: 1199px)").matches) {
     isSidebarOpen.value = false;
+    dismiss.value = "offcanvas";
   } else {
     isSidebarOpen.value = true;
+    dismiss.value = "none";
   }
 };
 </script>
@@ -137,44 +139,36 @@ const handleResize = () => {
   height: 8px;
 }
 
-.avatar {
-  height: 25px;
-  min-width: 25px;
-  width: 25px;
-}
-
 .icon-wrapper {
   width: 20px;
-
-  svg {
-    color: $text-muted;
-  }
-
-  &.logout-icon {
-    width: 25px;
-
-    svg {
-      color: $secondary;
-    }
-  }
 }
 
 nav {
+  li {
+    span {
+      color: $text-muted;
+    }
+  }
+
   a,
   button {
     transition: 300ms ease !important;
 
     &.router-link-active {
       background-color: $secondary;
-      color: #fff !important;
+      box-shadow: 0 0 15px $secondary, inset 0 0 15px $secondary;
 
-      .icon-wrapper > svg {
-        filter: brightness(5);
+      span {
+        color: $primary !important;
+      }
+
+      .icon-wrapper > i {
+        color: $primary !important;
       }
     }
 
     &:hover:not(.router-link-active) {
-      background-color: #7c3a2d1b;
+      background-color: #69edd020;
     }
   }
 
@@ -189,7 +183,7 @@ nav {
 
 .logo {
   max-height: 40px;
-  max-width: 80px;
+  max-width: 150px;
 }
 
 .offcanvas {

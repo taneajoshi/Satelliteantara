@@ -4,17 +4,22 @@ $enable-cssgrid: true;
 //Bootstrap overrides for our theme
 
 // Color Theme
-$primary: #6A69FA;
-$secondary: #64ffda;
-$body-bg: #191f2c;
-$body-color: #191f2c;
-$tertiary: #7C878E;
-$light: #F8F9FB !default;
-$dark: #191f2c;
+$primary: #6153DE;
+$secondary: #69edd0;
+$body-bg: #0d0722;
+$body-color: #eeeeee;
+$tertiary: #7c878e;
+$light: #fefefe !default;
+$dark: #0a2a3e;
 $info: #0d6efd;
-$text-muted: #5F6D7E;
-$stroke-light: #C7C7D1;
+$text-muted: #d8d8de;
+$stroke-light: #dbdbe0;
 $disabled-bg: #c7c7d128;
+$body-bg-gradient: linear-gradient(
+  180deg,
+  rgba(50, 70, 80, 0.9) 0%,
+  rgb(13, 16, 27) 100%
+);
 
 //Button Theme
 $btn-font-size: 14px;
@@ -26,8 +31,8 @@ $btn-padding-x: 16px;
 
 // Typography
 $font-family-base: Inter, "Lucida Grande", sans-serif;
-$h1-font-size: 24px !default;
-$h2-font-size: 18px !default;
+$h1-font-size: 22px !default;
+$h2-font-size: 16px !default;
 $h3-font-size: 14px !default;
 $h4-font-size: 12px !default;
 $headings-font-weight: 600 !default;
@@ -36,6 +41,7 @@ $headings-font-weight: 600 !default;
 $input-padding-y: 12px;
 $input-padding-x: 18px;
 $input-font-size: 16px;
+$input-bg: transparent;
 $input-color: $text-muted;
 $input-line-height: 1.66;
 $input-group-addon-bg: transparent;
@@ -45,8 +51,16 @@ $form-select-disabled-bg: $disabled-bg;
 $input-disabled-bg: $disabled-bg;
 $form-select-feedback-icon-padding-end: 64px;
 $form-select-feedback-icon-size: 14px;
-$form-select-indicator-padding : 45px;
+$form-select-indicator-padding: 45px;
 $input-height-inner-half: 14px;
+$form-select-indicator-color: $secondary;
+$form-select-focus-border-color: $secondary;
+$form-select-focus-box-shadow: 0 0 10px $secondary, inset 0 0 10px $secondary;
+$input-focus-border-color: $secondary;
+$input-focus-box-shadow: 0 0 10px $secondary, inset 0 0 10px $secondary;
+$form-valid-border-color: $secondary !default;
+$form-feedback-valid-color: $secondary !default;
+$form-feedback-icon-valid-color: $secondary !default;
 
 //Pagination
 $pagination-border-width: 0;
@@ -58,4 +72,15 @@ $pagination-active-bg: #e6e9ec;
 //Global Variables
 $sidebar-width: 223px;
 $border-radius: 8px;
-$gradient: linear-gradient(120deg, #9026FF, #00C7F7);
+$gradient: linear-gradient(
+  to right bottom,
+  #16094c,
+  #150940,
+  #0d0722,
+  #130628,
+  #0a0113
+);
+$roboto-flex: "Roboto Flex", sans-serif;
+$highlight-base1: #ff5161;
+$highlight-base2: 00ffff;
+$neon-shadow: 0 0 12px var(--neon-glow), inset 0 0 12px var(--neon-glow);

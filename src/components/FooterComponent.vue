@@ -15,3 +15,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+small {
+  margin-left: -175px;
+}
+</style>

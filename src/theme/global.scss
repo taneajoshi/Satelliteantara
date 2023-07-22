@@ -1,43 +1,80 @@
 .btn-primary {
-    --#{$prefix}btn-hover-bg: #304658;
-    --#{$prefix}btn-hover-border-color: #304658;
-    --#{$prefix}btn-disabled-bg: #7c878e;
-    --#{$prefix}btn-disabled-border-color: #7c878e;
+  --#{$prefix}btn-hover-bg: #304658;
+  --#{$prefix}btn-hover-color: #eeeeee;
+  --#{$prefix}btn-hover-border-color: #304658;
+  --#{$prefix}btn-disabled-bg: #7c878e;
+  --#{$prefix}btn-disabled-border-color: #7c878e;
+  --#{$prefix}btn-color: #eeeeee;
+  background-image: linear-gradient(45deg, black, transparent);
+}
+
+html:before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: -5;
+  background: linear-gradient(
+    to right bottom,
+    rgba(9, 3, 32, 0.93),
+    rgba(12, 5, 37, 0.93),
+    rgb(13, 7, 34, 0.93),
+    rgba(32, 11, 66, 0.93),
+    rgba(19, 2, 36, 0.93)
+  );
+}
+
+body{
+  letter-spacing: 1.6px;
+  word-spacing: 0.4px;
+  &::before{
+    content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background-color: transparent;
+      background-image: url("../assets/images/body-bg-cover.jpeg");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      z-index: -6;
   }
+}
 
-  .flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .cursor-pointer {
-    cursor: pointer;
-  }
+.cursor-pointer {
+  cursor: pointer;
+}
 
-  .btn {
-    &.text-primary,
-    &.text-secondary {
-      &:hover {
-        opacity: 0.8;
-      }
-    }
-   }
-
-   //Override input group style
-   .input-group {
-    input {
-      padding-left: 40px;
-    }
-
-    .input-group-text {
-      z-index: 9;
-    }
-   }
-
-  .form-select,
-  .form-control {
-    &[disabled] {
-      cursor: not-allowed;
+.btn {
+  &.text-primary,
+  &.text-secondary {
+    &:hover {
+      opacity: 0.8;
     }
   }
+}
+
+//Override input group style
+.input-group {
+  .input-group-text {
+    z-index: 9;
+    right: 0;
+  }
+}
+
+.form-select,
+.form-control {
+  &[disabled] {
+    cursor: not-allowed;
+  }
+}

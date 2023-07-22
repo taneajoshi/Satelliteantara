@@ -31,9 +31,10 @@ function updateValidityState(
     );
   }
 
-  element.classList.remove("is-touched");
   if (control.touched) {
     element.classList.add("is-touched");
+  } else {
+    element.classList.remove("is-touched");
   }
 
   if (control.invalid) {

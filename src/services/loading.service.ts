@@ -1,5 +1,5 @@
 import { map, Observable, of, switchMap } from "rxjs";
-import { Inject, Injectable } from "../container/container-decorators";
+import { Inject, Injectable } from "../container/container-decorator.ts";
 import { ModalControllerService } from "./modal-controller.service.ts";
 import LoadingComponent from "../components/LoadingComponent.vue";
 

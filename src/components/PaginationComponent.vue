@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PaginatedInterface } from "../interfaces/paginated.interface.ts";
+import { PaginatedInterface } from "../interfaces/paginatedInterface";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 

@@ -1,0 +1,101 @@
+<template>
+  <div>
+    <apexchart type="bar" :options="chartOptions" :series="series" />
+  </div>
+</template>
+
+<script>
+import { ref } from "vue";
+import VueApexCharts from "vue3-apexcharts";
+
+export default {
+  components: {
+    apexchart: VueApexCharts,
+  },
+  setup() {
+    // Data
+    const series = ref([
+      {
+        name: "Net Profit",
+        data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
+      },
+      {
+        name: "Revenue",
+        data: [76, 85, 10, 3, 87, 105, 91, 14, 94],
+      },
+      {
+        name: "Free Cash Flow",
+        data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+      },
+      {
+        name: "Data",
+        data: [35, 41, 36, 22, 45, 48, 52, 53, 41],
+      },
+      {
+        name: "Data",
+        data: [35, 41, 36, 26, 45, 48, 50, 53, 41],
+      },
+      {
+        name: "Data",
+        data: [35, 41, 36, 26, 60, 48, 22, 53, 11],
+      },
+    ]);
+
+    // Chart options
+    const chartOptions = ref({
+      chart: {
+        type: "bar",
+        height: 350,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"],
+      },
+      xaxis: {
+        categories: [
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+        ],
+      },
+      yaxis: {
+        title: {
+          text: "$ (thousands)",
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$ " + val + " thousands";
+          },
+        },
+      },
+    });
+
+    return {
+      series,
+      chartOptions,
+    };
+  },
+};
+</script>
