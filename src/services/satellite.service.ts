@@ -28,7 +28,6 @@ export class SatelliteService {
       .get<SatelliteInterface[]>("/src/assets/data/satellites.json")
       .pipe(
         map((result) => {
-          console.log(filterOptions);
           const paginatedList = result.response.slice(
             startIndex,
             startIndex + pagination.pageSize

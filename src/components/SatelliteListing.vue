@@ -17,7 +17,7 @@
               aria-label="Search"
               v-model="filterForm.get('search').value"
               v-input-validity="filterForm.get('search')"
-              @keydown="debouncedSearch"
+              @input="debouncedSearch"
             />
             <span
               class="input-group-text position-absolute text-secondary translate-middle-y top-50"
@@ -125,7 +125,7 @@
 
     <template v-else>
       <div class="h4 mb-0 text-center p-5 min-vh-45 flex-center">
-        No matching satellite in current page.
+        No matching satellite with such data in current page.
       </div>
     </template>
   </section>
@@ -217,6 +217,8 @@ function initFiltersFromRouteParams(query: any) {
     filterOptions.value[key] = query[key] ? query[key]?.toString() : "";
     filterForm.get(key.toString()).value = query[key] || "";
   });
+
+  currentPage.value = Number(route.query.page) || 1;
 }
 
 // Define the lists of countries, orbits, and object types here.
@@ -324,6 +326,8 @@ searchInputValue$.pipe(debounceTime(300)).subscribe(() => {
 
   router.push(`${currentPath}?${searchParams.toString()}`);
 });
+
+currentPage.value = Number(route.query.page) || 1;
 
 // Function to navigate to the next page
 function goToNextPage() {

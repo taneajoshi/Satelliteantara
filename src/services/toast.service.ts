@@ -118,7 +118,7 @@ export class ToastService {
     });
 
     modalInstance.show();
-    interval(300000).subscribe(() => {
+    interval(3000).subscribe(() => {
       modalInstance.hide();
       toastElement.remove();
     });
