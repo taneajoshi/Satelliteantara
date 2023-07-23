@@ -3,7 +3,6 @@ import { Inject, Injectable } from "../container/container-decorator";
 import { StorageType } from "../container/container-tokens";
 
 export enum StorageKeys {
-  Token = "token",
   User = "user",
 }
 
@@ -33,23 +32,5 @@ export class StorageService {
     return of(this.storageDriver.setItem(key, JSON.stringify(value))).pipe(
       map(() => true)
     );
-  }
-
-  /**
-   * Removes the key stored in the local storage.
-   * @param key
-   */
-  public remove(key: StorageKeys): Observable<boolean> {
-    return of(true).pipe(
-      map(() => this.storageDriver.removeItem(key)),
-      map(() => true)
-    );
-  }
-
-  /**
-   * Removes all keys
-   */
-  public clearAll(): Observable<boolean> {
-    return of(this.storageDriver.clear()).pipe(map(() => true));
   }
 }

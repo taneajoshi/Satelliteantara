@@ -11,7 +11,14 @@
       Go to Dashboard
     </router-link>
   </div>
+  <EarthComponent />
+  <LoginBgComponent />
 </template>
+
+<script setup lang="ts">
+import EarthComponent from "../components/EarthComponent.vue";
+import LoginBgComponent from "../components/LoginBgComponent.vue";
+</script>
 
 <style lang="scss" scoped>
 h1 {

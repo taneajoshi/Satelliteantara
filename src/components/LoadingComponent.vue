@@ -33,7 +33,7 @@ defineProps<MessageProps>();
 
 body.modal-open {
   overflow: hidden;
-  padding-right: 15px; // Adjust as needed for your layout
+  padding-right: 15px;
 }
 
 .modal-dialog,

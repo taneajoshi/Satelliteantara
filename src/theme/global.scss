@@ -82,12 +82,40 @@ body {
 
 .btn-outline-secondary,
 .btn-secondary {
-  box-shadow:  0 0 5px $secondary, inset 0 0 5px $secondary;
+  box-shadow: 0 0 5px $secondary, inset 0 0 5px $secondary;
 }
+
+.form-control.is-valid.is-touched:focus {
+  --neon-glow: #69edd0;
+  box-shadow: $neon-shadow !important;
+}
+
 
 //Toasts
 .toast {
   &.text-bg-danger {
-    box-shadow:  0 0 15px $danger, inset 0 0 15px $danger;
+    box-shadow: 0 0 15px $danger, inset 0 0 15px $danger;
+  }
+
+  &.text-bg-success {
+    background: #1f8c74 !important;
+    box-shadow: 0 0 15px $secondary, inset 0 0 15px $secondary;
+  }
+}
+
+//Password Toggle Global
+.password-wrapper {
+  input {
+    &.is-invalid,
+    &.is-valid {
+      padding-right: 70px;
+      & + svg {
+        right: 40px;
+      }
+    }
+  }
+  svg {
+    @extend .cursor-pointer;
+    right: 10px;
   }
 }

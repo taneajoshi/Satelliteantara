@@ -18,7 +18,7 @@ export default {
     apexchart: VueApexCharts,
   },
   setup() {
-    // Data
+    // Dummy Data
     const series = ref([44, 55, 13, 43, 22]);
 
     // Chart options

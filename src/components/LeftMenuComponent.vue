@@ -12,15 +12,7 @@
     <div class="offcanvas-header d-block px-4 py-0">
       <!-- App Logo -->
       <div class="d-flex justify-content-between align-items-center">
-        <div class="logo">
-          <router-link to="/dashboard">
-            <img
-              src="../assets/images/app-logo.png"
-              class="w-100"
-              alt="app logo"
-            />
-          </router-link>
-        </div>
+        <LogoComponent />
         <!-- Close Button -->
         <button
           v-if="!isSidebarOpen"
@@ -87,7 +79,8 @@
 
         <!-- Logout -->
         <li :data-bs-dismiss="dismiss" class="mt-auto">
-          <button
+          <router-link
+            to="/"
             class="btn border-0 w-100 py-3 px-4 d-flex align-items-center"
           >
             <span class="icon-wrapper me-2 logout-icon">
@@ -97,7 +90,7 @@
               />
             </span>
             <span class="text-secondary mb-0 lh-1 fw-semibold"> Logout </span>
-          </button>
+          </router-link>
         </li>
         <!-- /Logout -->
       </ul>
@@ -108,6 +101,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import LogoComponent from "./LogoComponent.vue";
 
 const isSidebarOpen = ref(true);
 const dismiss = ref("none");
@@ -133,10 +127,6 @@ const handleResize = () => {
 
 .sidebar-width {
   width: $sidebar-width;
-}
-
-.profile-progress-bar {
-  height: 8px;
 }
 
 .icon-wrapper {
@@ -179,11 +169,6 @@ nav {
       --app-left-menu-height: 170px;
     }
   }
-}
-
-.logo {
-  max-height: 40px;
-  max-width: 150px;
 }
 
 .offcanvas {

@@ -36,7 +36,7 @@ onBeforeUnmount(() => formControlUpdateSubscription?.unsubscribe());
 
 const hasErrors = computed<boolean>(() => isTouched.value && !isValid.value);
 
-//Handle error cases
+//Handle error cases.
 const errors = computed<string[]>(() => {
   const errorValues: string[] = [];
   for (const key of Object.keys(props.formControl.errors) as ErrorKeys[]) {
@@ -78,6 +78,9 @@ const errors = computed<string[]>(() => {
           }`
         );
         break;
+      case ErrorKeys.MatchConfirmPassword:
+        errorValues.push("Passwords didn't match.");
+        break;
       case ErrorKeys.NoWhiteSpace:
         errorValues.push("Please enter a valid search query.");
         break;
@@ -91,7 +94,7 @@ const errors = computed<string[]>(() => {
 
 <template>
   <slot></slot>
-  <div class="invalid-feedback d-block" v-if="hasErrors">
+  <div class="invalid-feedback d-block mt-2" v-if="hasErrors">
     <ul class="list-unstyled mb-0">
       <li v-for="(error, index) in errors" :key="index" class="h4 mb-0">
         {{ error }}

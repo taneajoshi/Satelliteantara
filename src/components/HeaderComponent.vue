@@ -9,10 +9,10 @@
         <small
           class="avatar me-2 rounded-5 h4 mb-0 fw-normal bg-primary text-white d-flex justify-content-center align-items-center"
         >
-          TJ
+          {{ initials }}
         </small>
         <h3 class="text-muted text-break fw-medium text-capitalize mb-0">
-          User Name
+          {{ userName }}
         </h3>
       </div>
 
@@ -36,15 +36,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { StorageKeys, StorageService } from "../services/storage.service";
+import { applicationContainer } from "../container/container";
 
+//Dependencies
+const storageService = applicationContainer.resolve(StorageService);
+
+//Variables
+const userName = ref("");
 const showSidebarToggler = ref(false);
-// const authUser = ref(null);
 
 onMounted(() => {
+  getUserName();
   handleResize();
   window.addEventListener("resize", handleResize);
 });
+
+// Fetch user name from the local storage.
+function getUserName() {
+  storageService.get(StorageKeys.User).subscribe((result) => {
+    userName.value = result as string;
+  });
+}
 
 /** Handle Sidebar dynamic properties on resize **/
 const handleResize = () => {
@@ -55,11 +69,12 @@ const handleResize = () => {
   }
 };
 
-// const initials = computed<string>(() => {
-//   const name = authUser?.value?.profile.name;
-//   const initialsMatch = name?.match(/\b(\w)/g);
-//   return initialsMatch?.slice(0, 2).join("").toUpperCase() || "";
-// });
+/** Compute user initials based on name provided on login. **/
+const initials = computed<string>(() => {
+  const name = userName.value;
+  const initialsMatch = name?.match(/\b(\w)/g);
+  return initialsMatch?.slice(0, 2).join("").toUpperCase() || "";
+});
 </script>
 
 <style scoped lang="scss">

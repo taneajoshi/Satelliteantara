@@ -1,4 +1,4 @@
-import { SyncValidator } from "universal-reactive-forms";
+import { FormControl, SyncValidator } from "universal-reactive-forms";
 export enum ErrorKeys {
   Min = "min",
   Required = "required",
@@ -8,6 +8,7 @@ export enum ErrorKeys {
   MaxLength = "maxLength",
   MinLength = "minLength",
   NoWhiteSpace = "noWhiteSpace",
+  MatchConfirmPassword = "matchConfirmPassword",
 }
 
 // Common Validations
@@ -115,4 +116,39 @@ export const Email: SyncValidator = (value: any) => {
 export const noWhiteSpaceValidation: SyncValidator = (value) => {
   const isWhitespace = value.length > 1 && value.toString().trim().length === 0;
   return isWhitespace ? { [ErrorKeys.NoWhiteSpace]: "true" } : null;
+};
+
+const StrongPasswordRegex = new RegExp(
+  /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/
+);
+
+export function strongPasswordValidation(): SyncValidator {
+  return (value: string) =>
+    StrongPasswordRegex.test(value) &&
+    value.trim().length >= 8 &&
+    !/\s/.test(value)
+      ? null
+      : { [ErrorKeys.Password]: "true" };
+}
+
+export const ConfirmPasswordValidator: (
+  passwordControl: FormControl,
+  confirmPasswordControl: FormControl
+) => SyncValidator = (passwordControl, confirmPasswordControl) => {
+  passwordControl.valueChanges.subscribe(() => {
+    confirmPasswordControl.value || confirmPasswordControl.touched
+      ? confirmPasswordControl.validate()
+      : null;
+  });
+
+  return (value: any) => {
+    const passwordValue = passwordControl.value;
+    const confirmPasswordValue = value;
+
+    if (passwordValue === confirmPasswordValue) {
+      return null;
+    }
+
+    return { [ErrorKeys.MatchConfirmPassword]: "true" };
+  };
 };

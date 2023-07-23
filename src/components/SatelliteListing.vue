@@ -130,6 +130,7 @@
     </template>
   </section>
 
+  <!-- Pagination -->
   <div class="d-flex align-items-center justify-content-between mt-4">
     <button
       class="btn btn-outline-secondary"
@@ -149,11 +150,12 @@
       Next
     </button>
   </div>
+  <!-- /Pagination -->
 </template>
 
 <script setup lang="ts">
 import { BehaviorSubject, debounceTime, finalize, switchMap } from "rxjs";
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { applicationContainer } from "../container/container";
 import { SatelliteInterface } from "../interfaces/SatelliteInterface";
 import { LoadingService } from "../services/loading.service";
@@ -187,15 +189,11 @@ const currentPage = ref<number>(1);
 const hasPrevious = ref<boolean>(false);
 const hasNext = ref<boolean>(false);
 const searchInputValue$ = new BehaviorSubject<string>("");
+const loading = ref(false);
 
 interface Filter {
   [key: string]: string | undefined;
 }
-
-onMounted(() => {
-  loadSatellitesData();
-  initFiltersFromRouteParams(route.query);
-});
 
 /**
  * Filter Form
@@ -221,26 +219,6 @@ function initFiltersFromRouteParams(query: any) {
   currentPage.value = Number(route.query.page) || 1;
 }
 
-// Define the lists of countries, orbits, and object types here.
-const countries = ref([
-  { code: "US", name: "United States of America" },
-  { code: "PRC", name: "People's Republic of China" },
-  { code: "INDO", name: "Indonesia" },
-  { code: "TBD", name: "To be decided" },
-]);
-
-const orbits = ref([
-  { code: "LEO", name: "Leo" },
-  { code: "HEO", name: "Heo" },
-  { code: "CIS", name: "Commonwealth of Independent States " },
-  { code: "GEO", name: "Geo" },
-]);
-
-const objectTypes = ref([
-  { code: "DEBRIS", name: "Debris" },
-  { code: "PAYLOAD", name: "Payload" },
-]);
-
 /**
  * Shuffle dummy images to use as satellite image.
  **/
@@ -259,6 +237,10 @@ const debouncedSearch = () => {
 function loadSatellitesData(
   pagination: PaginationQuery = { page: 1, pageSize: 10 }
 ) {
+  if (loading.value) {
+    return;
+  }
+
   const paginationOption: Required<PaginationQuery> = {
     page: pagination.page || 1,
     pageSize: pagination.pageSize || 10,
@@ -266,6 +248,8 @@ function loadSatellitesData(
 
   // Record the start time
   const startTime = performance.now();
+
+  loading.value = true;
 
   loadingService
     .show()
@@ -279,8 +263,7 @@ function loadSatellitesData(
     )
     .pipe(
       finalize(() => {
-        const endTime = performance.now();
-        loadingTime.value = +(endTime - startTime).toFixed(2);
+        loading.value = false;
         loadingService.hide().subscribe();
       })
     )
@@ -288,6 +271,8 @@ function loadSatellitesData(
       next: (result) => {
         shuffleImages();
         satelliteData.value = result;
+        const endTime = performance.now();
+        loadingTime.value = +(endTime - startTime).toFixed(2);
       },
       error: () => {
         toastService.danger("Unable to load satellites.").subscribe();
@@ -300,7 +285,6 @@ function loadSatellitesData(
  **/
 function getFilteredSatellites() {
   const filterValues = filterForm.getRawValue();
-  console.log("get filtered", filterValues);
   const currentPath = route.path;
 
   Object.entries(filterValues).forEach(([control, value]) => {
@@ -327,8 +311,6 @@ searchInputValue$.pipe(debounceTime(300)).subscribe(() => {
   router.push(`${currentPath}?${searchParams.toString()}`);
 });
 
-currentPage.value = Number(route.query.page) || 1;
-
 // Function to navigate to the next page
 function goToNextPage() {
   if (hasNext.value) {
@@ -352,27 +334,51 @@ function updateQueryParams() {
   router.push(`${currentPath}?${searchParams.toString()}`);
 }
 
+currentPage.value = Number(route.query.page) || 1;
+
 // Watch for changes in satelliteData to update pagination status
 watch(satelliteData, () => {
-  const totalPages = Math.ceil(27000 / 10); // Assuming page size is 10
+  const totalPages = Math.ceil(27000 / 10); // Assuming page size is 10 and data is 27000
 
   // Update pagination status
   hasPrevious.value = currentPage.value > 1;
   hasNext.value = currentPage.value < totalPages;
 });
 
-/**
- * Watch for route/params to change and then call the load filters
- **/
-watch(route, () => loadSatellitesData(route.query), {
-  immediate: true,
-  deep: true,
-});
+watch(
+  route,
+  () => {
+    if (!loading.value) {
+      loadSatellitesData(route.query);
+    }
+  },
+  { immediate: true, deep: true }
+);
 
 watch(route, () => initFiltersFromRouteParams(route.query), {
   immediate: true,
   deep: true,
 });
+
+// Define the lists of countries, orbits, and object types here.
+const countries = ref([
+  { code: "US", name: "United States of America" },
+  { code: "PRC", name: "People's Republic of China" },
+  { code: "INDO", name: "Indonesia" },
+  { code: "TBD", name: "To be decided" },
+]);
+
+const orbits = ref([
+  { code: "LEO", name: "Leo" },
+  { code: "HEO", name: "Heo" },
+  { code: "CIS", name: "Commonwealth of Independent States " },
+  { code: "GEO", name: "Geo" },
+]);
+
+const objectTypes = ref([
+  { code: "DEBRIS", name: "Debris" },
+  { code: "PAYLOAD", name: "Payload" },
+]);
 </script>
 
 <style lang="scss" scoped>

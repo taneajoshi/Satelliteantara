@@ -31,7 +31,7 @@ $btn-padding-y: 10px;
 $btn-padding-x: 16px;
 
 // Typography
-$font-family-base: Inter, "Lucida Grande", sans-serif;
+$font-family-base: "Roboto Flex", "Lucida Grande", sans-serif;
 $h1-font-size: 22px !default;
 $h2-font-size: 16px !default;
 $h3-font-size: 14px !default;
@@ -53,6 +53,7 @@ $input-disabled-bg: $disabled-bg;
 $form-select-feedback-icon-padding-end: 64px;
 $form-select-feedback-icon-size: 14px;
 $form-select-indicator-padding: 45px;
+$form-feedback-valid-color: $secondary;
 $input-height-inner-half: 14px;
 $form-select-indicator-color: $secondary;
 $form-select-focus-border-color: $secondary;
@@ -84,4 +85,4 @@ $gradient: linear-gradient(
 $roboto-flex: "Roboto Flex", sans-serif;
 $highlight-base1: #ff5161;
 $highlight-base2: 00ffff;
-$neon-shadow: 0 0 12px var(--neon-glow), inset 0 0 12px var(--neon-glow);
+$neon-shadow: 0 0 10px var(--neon-glow), inset 0 0 10px var(--neon-glow);

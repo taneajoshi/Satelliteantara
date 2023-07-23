@@ -2,7 +2,7 @@
   <PageComponent>
     <template #pageTitle> Dashboard </template>
     <div class="container-xxl p-0">
-      <SatellitesListing></SatellitesListing>
+      <SatellitesListing />
     </div>
   </PageComponent>
 </template>

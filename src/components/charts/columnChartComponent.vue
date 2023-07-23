@@ -13,7 +13,7 @@ export default {
     apexchart: VueApexCharts,
   },
   setup() {
-    // Data
+    // Dummy Data
     const series = ref([
       {
         name: "Net Profit",

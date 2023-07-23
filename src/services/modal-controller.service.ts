@@ -35,7 +35,6 @@ export class ModalControllerService extends Array<{
       any,
       any,
       any,
-      any,
       any
     >;
     props?: {

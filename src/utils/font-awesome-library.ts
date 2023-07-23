@@ -8,7 +8,11 @@ import {
   faArrowRightFromBracket,
   faCircleNotch,
   faSpinner,
+  faCircleCheck,
+  faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -25,6 +29,10 @@ export function fontAwesomeLibrary() {
     faUserAstronaut,
     faArrowRightFromBracket,
     faCircleNotch,
-    faSpinner
+    faSpinner,
+    faCircleCheck,
+    faEye,
+    faEyeSlash,
+    faCircleXmark
   );
 }
