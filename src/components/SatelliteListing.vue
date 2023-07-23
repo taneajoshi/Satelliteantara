@@ -161,7 +161,7 @@ import { SatelliteInterface } from "../interfaces/SatelliteInterface";
 import { LoadingService } from "../services/loading.service";
 import { SatelliteService } from "../services/satellite.service";
 import { ToastService } from "../services/toast.service";
-import { SatelliteImages } from "../assets/data/satellitesImage.json";
+import { SatelliteImages } from "../../public/data/satellitesImage.json";
 import { useRoute, useRouter } from "vue-router";
 import { FormControl, FormGroup } from "universal-reactive-forms";
 import { noWhiteSpaceValidation } from "../utils/validations";
@@ -300,7 +300,6 @@ function getFilteredSatellites() {
  **/
 searchInputValue$.pipe(debounceTime(300)).subscribe(() => {
   const filterValues = filterForm.getRawValue();
-  console.log("get filtered", filterValues);
   const currentPath = route.path;
 
   Object.entries(filterValues).forEach(([control, value]) => {

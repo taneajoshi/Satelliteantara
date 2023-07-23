@@ -24,47 +24,45 @@ export class SatelliteService {
   ): Observable<SatelliteInterface[]> {
     // Calculate the start index based on the page number and page size
     const startIndex = (pagination.page - 1) * pagination.pageSize;
-    return this.http
-      .get<SatelliteInterface[]>("/src/assets/data/satellites.json")
-      .pipe(
-        map((result) => {
-          const paginatedList = result.response.slice(
-            startIndex,
-            startIndex + pagination.pageSize
+    return this.http.get<SatelliteInterface[]>("./data/satellites.json").pipe(
+      map((result) => {
+        const paginatedList = result.response.slice(
+          startIndex,
+          startIndex + pagination.pageSize
+        );
+
+        let filteredList = paginatedList.filter((satellite) => {
+          const searchTerm = filterOptions.search
+            ? filterOptions.search.trim().toLowerCase()
+            : "";
+          if (searchTerm) {
+            return (
+              satellite.name.toLowerCase().includes(searchTerm) ||
+              satellite.noradCatId.includes(searchTerm)
+            );
+          }
+          return true;
+        });
+
+        // Apply additional filtering based on the selected options in the dropdowns
+        if (filterOptions.countryCode) {
+          filteredList = filteredList.filter(
+            (satellite) => satellite.countryCode === filterOptions.countryCode
           );
+        }
+        if (filterOptions.orbitCode) {
+          filteredList = filteredList.filter(
+            (satellite) => satellite.orbitCode === filterOptions.orbitCode
+          );
+        }
+        if (filterOptions.objectType) {
+          filteredList = filteredList.filter(
+            (satellite) => satellite.objectType === filterOptions.objectType
+          );
+        }
 
-          let filteredList = paginatedList.filter((satellite) => {
-            const searchTerm = filterOptions.search
-              ? filterOptions.search.trim().toLowerCase()
-              : "";
-            if (searchTerm) {
-              return (
-                satellite.name.toLowerCase().includes(searchTerm) ||
-                satellite.noradCatId.includes(searchTerm)
-              );
-            }
-            return true;
-          });
-
-          // Apply additional filtering based on the selected options in the dropdowns
-          if (filterOptions.countryCode) {
-            filteredList = filteredList.filter(
-              (satellite) => satellite.countryCode === filterOptions.countryCode
-            );
-          }
-          if (filterOptions.orbitCode) {
-            filteredList = filteredList.filter(
-              (satellite) => satellite.orbitCode === filterOptions.orbitCode
-            );
-          }
-          if (filterOptions.objectType) {
-            filteredList = filteredList.filter(
-              (satellite) => satellite.objectType === filterOptions.objectType
-            );
-          }
-
-          return filteredList;
-        })
-      );
+        return filteredList;
+      })
+    );
   }
 }

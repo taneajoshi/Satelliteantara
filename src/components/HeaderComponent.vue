@@ -9,10 +9,10 @@
         <small
           class="avatar me-2 rounded-5 h4 mb-0 fw-normal bg-primary text-white d-flex justify-content-center align-items-center"
         >
-          {{ initials }}
+          {{ initials || "A" }}
         </small>
         <h3 class="text-muted text-break fw-medium text-capitalize mb-0">
-          {{ userName }}
+          Hi! {{ userName || "There" }}
         </h3>
       </div>
 

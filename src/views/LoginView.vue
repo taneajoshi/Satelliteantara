@@ -143,7 +143,6 @@ const loginForm = createLoginForm();
 const passwordFormControl = loginForm.get("password") as FormControl;
 
 function login() {
-  console.log(loginForm.getRawValue());
   loadingService
     .show()
     .pipe(
