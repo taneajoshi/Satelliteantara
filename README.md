@@ -22,13 +22,13 @@ Follow these steps to set up and start developing your Vue 3 project:
 
 1. Install the dependencies using npm:
 
-In the project directory, run:
+   In the project directory, run:
 
-npm install
+   npm install
 
 2. Start the development server:
 
-npm run dev
+    npm run dev
 
 If you have any questions or encounter any issues, feel free to reach out.
 
