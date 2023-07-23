@@ -1,6 +1,6 @@
 ## Showcase
 
-Take a look at our live demo, showcasing the remarkable capabilities of this template: [Live Demo](https://satellantara.netlify.app)
+Take a look at live demo: [Live Demo](https://satellantara.netlify.app)
 
 ## Features
 
