@@ -11,16 +11,16 @@ export class SatelliteService {
 
   /**
    * Returns a paginated list of satellites
-   * @param page Page number (starting from 1)
+   * @param page Page number
    * @param pageSize Number of elements per page
    * @returns paginated list of satellites depending on page size.
    **/
   public listPaginated(
     pagination: Required<PaginationQuery> = {
       page: 1,
-      pageSize: 15,
+      pageSize: 10,
     },
-    filterOption: FilterInterface = {}
+    filterOptions: FilterInterface = {} // Corrected parameter name
   ): Observable<SatelliteInterface[]> {
     // Calculate the start index based on the page number and page size
     const startIndex = (pagination.page - 1) * pagination.pageSize;
@@ -28,11 +28,43 @@ export class SatelliteService {
       .get<SatelliteInterface[]>("/src/assets/data/satellites.json")
       .pipe(
         map((result) => {
-          console.log(filterOption);
-          return result.response.slice(
+          console.log(filterOptions);
+          const paginatedList = result.response.slice(
             startIndex,
             startIndex + pagination.pageSize
           );
+
+          let filteredList = paginatedList.filter((satellite) => {
+            const searchTerm = filterOptions.search
+              ? filterOptions.search.trim().toLowerCase()
+              : "";
+            if (searchTerm) {
+              return (
+                satellite.name.toLowerCase().includes(searchTerm) ||
+                satellite.noradCatId.includes(searchTerm)
+              );
+            }
+            return true;
+          });
+
+          // Apply additional filtering based on the selected options in the dropdowns
+          if (filterOptions.countryCode) {
+            filteredList = filteredList.filter(
+              (satellite) => satellite.countryCode === filterOptions.countryCode
+            );
+          }
+          if (filterOptions.orbitCode) {
+            filteredList = filteredList.filter(
+              (satellite) => satellite.orbitCode === filterOptions.orbitCode
+            );
+          }
+          if (filterOptions.objectType) {
+            filteredList = filteredList.filter(
+              (satellite) => satellite.objectType === filterOptions.objectType
+            );
+          }
+
+          return filteredList;
         })
       );
   }

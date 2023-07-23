@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, onMounted } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 
@@ -19,11 +19,11 @@ export default {
   },
   setup() {
     const lastDate = ref(new Date().getTime());
-    const data = ref([]);
+    const data = ref<any>([]);
     const dataLimit = 30; // Limit the number of data points to 30
 
     // Function to generate random data
-    function getRandomNumber(min, max) {
+    function getRandomNumber(min: any, max: any) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
@@ -45,7 +45,7 @@ export default {
       series.value[0].data = data.value;
 
       // Update the chart with the new series data
-      chart.value.updateSeries(series.value);
+      chart.value?.updateSeries(series.value);
 
       // Update the x-axis range to show the last 12 seconds of data
       chartOptions.value.xaxis.range.min = lastDate.value - 12000;
@@ -105,7 +105,7 @@ export default {
       },
     });
 
-    const chart = ref(null);
+    const chart = ref<any>(null);
 
     onMounted(() => {
       // Render the chart and save the chart reference

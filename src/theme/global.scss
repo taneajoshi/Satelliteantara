@@ -1,13 +1,3 @@
-.btn-primary {
-  --#{$prefix}btn-hover-bg: #304658;
-  --#{$prefix}btn-hover-color: #eeeeee;
-  --#{$prefix}btn-hover-border-color: #304658;
-  --#{$prefix}btn-disabled-bg: #7c878e;
-  --#{$prefix}btn-disabled-border-color: #7c878e;
-  --#{$prefix}btn-color: #eeeeee;
-  background-image: linear-gradient(45deg, black, transparent);
-}
-
 html:before {
   content: "";
   position: fixed;
@@ -26,22 +16,22 @@ html:before {
   );
 }
 
-body{
+body {
   letter-spacing: 1.6px;
   word-spacing: 0.4px;
-  &::before{
+  &::before {
     content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 100%;
-      background-color: transparent;
-      background-image: url("../assets/images/body-bg-cover.jpeg");
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: cover;
-      z-index: -6;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-color: transparent;
+    background-image: url("../assets/images/body-bg-cover.jpeg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    z-index: -6;
   }
 }
 
@@ -76,5 +66,28 @@ body{
 .form-control {
   &[disabled] {
     cursor: not-allowed;
+  }
+}
+
+//Global Buttons
+.btn-primary {
+  --#{$prefix}btn-hover-bg: #304658;
+  --#{$prefix}btn-hover-color: #eeeeee;
+  --#{$prefix}btn-hover-border-color: #304658;
+  --#{$prefix}btn-disabled-bg: #7c878e;
+  --#{$prefix}btn-disabled-border-color: #7c878e;
+  --#{$prefix}btn-color: #eeeeee;
+  background-image: linear-gradient(45deg, black, transparent);
+}
+
+.btn-outline-secondary,
+.btn-secondary {
+  box-shadow:  0 0 5px $secondary, inset 0 0 5px $secondary;
+}
+
+//Toasts
+.toast {
+  &.text-bg-danger {
+    box-shadow:  0 0 15px $danger, inset 0 0 15px $danger;
   }
 }

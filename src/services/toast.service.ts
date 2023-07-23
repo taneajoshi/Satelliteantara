@@ -118,7 +118,7 @@ export class ToastService {
     });
 
     modalInstance.show();
-    interval(3000).subscribe(() => {
+    interval(300000).subscribe(() => {
       modalInstance.hide();
       toastElement.remove();
     });
@@ -151,7 +151,7 @@ export class ToastService {
             <div class="col-1 flex-center">
                 ${ToastIcon[background]}
             </div>
-            <div class="col-10">${message}</div>
+            <div class="col-10 message">${message}</div>
           </div>
         </div>
       </div>

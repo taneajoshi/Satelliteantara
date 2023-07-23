@@ -28,7 +28,7 @@
         </ErrorComponent>
         <!-- /Search -->
 
-        <div class="d-flex gap-3 flex-wrap mt-4">
+        <div class="d-flex gap-3 flex-wrap mt-3">
           <!-- Country Code -->
           <div class="form-group flex-grow-1">
             <ErrorComponent :form-control="filterForm.get('countryCode')">
@@ -96,9 +96,11 @@
     </div>
     <!-- /Filters -->
 
-    <div class="mb-4 h4"><small>Took 1.2 ms</small></div>
+    <div class="mb-4 h4">
+      <small>Took {{ loadingTime }} ms</small>
+    </div>
 
-    <div class="d-flex flex-wrap">
+    <div class="d-flex flex-wrap" v-if="satelliteData.length > 1">
       <div
         class="satellite-card d-flex gap-4 align-items-center mb-5"
         v-for="(data, index) in satelliteData"
@@ -112,14 +114,41 @@
           />
         </div>
         <div class="details h3 fw-light mb-0">
-          <p>Name: {{ data.name }}</p>
-          <p>Norad Cat Id: {{ data.noradCatId }}</p>
+          <p>Name: {{ data.name ?? "Not available" }}</p>
+          <p>Norad Cat Id: {{ data.noradCatId ?? "Not available" }}</p>
           <p>Orbit Code: {{ data.orbitCode ?? "Not available" }}</p>
-          <p>Object Type: {{ data.objectType }}</p>
+          <p>Object Type: {{ data.objectType ?? "Not available" }}</p>
+          <p>Country: {{ data.countryCode ?? "Not available" }}</p>
         </div>
       </div>
     </div>
+
+    <template v-else>
+      <div class="h4 mb-0 text-center p-5 min-vh-45 flex-center">
+        No matching satellite in current page.
+      </div>
+    </template>
   </section>
+
+  <div class="d-flex align-items-center justify-content-between mt-4">
+    <button
+      class="btn btn-outline-secondary"
+      @click="goToPreviousPage"
+      :disabled="!hasPrevious"
+    >
+      Previous
+    </button>
+    <div class="current-page text-secondary h4 mb-0">
+      Page: {{ currentPage }}
+    </div>
+    <button
+      class="btn btn-outline-secondary"
+      @click="goToNextPage"
+      :disabled="!hasNext"
+    >
+      Next
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -145,13 +174,19 @@ const satelliteService = applicationContainer.resolve(SatelliteService);
 const loadingService = applicationContainer.resolve(LoadingService);
 const toastService = applicationContainer.resolve(ToastService);
 
-const satelliteData = ref<SatelliteInterface[] | null>([]);
+//Variables
+const satelliteData = ref<SatelliteInterface[]>([]);
 const shuffledImageUrls = ref<string[]>([]);
 const route = useRoute();
 const router = useRouter();
 const filterOptions = ref<Filter>({});
 const searchParams = new URLSearchParams(route.query as any);
 const searchInputRef = ref<HTMLInputElement | null>(null);
+const loadingTime = ref(0);
+const currentPage = ref<number>(1);
+const hasPrevious = ref<boolean>(false);
+const hasNext = ref<boolean>(false);
+const searchInputValue$ = new BehaviorSubject<string>("");
 
 interface Filter {
   [key: string]: string | undefined;
@@ -162,13 +197,6 @@ onMounted(() => {
   initFiltersFromRouteParams(route.query);
 });
 
-const searchInputValue$ = new BehaviorSubject<string>("");
-
-const debouncedSearch = () => {
-  const inputValue = searchInputRef.value?.value || "";
-  searchInputValue$.next(inputValue);
-};
-
 /**
  * Filter Form
  **/
@@ -178,6 +206,18 @@ const filterForm = new FormGroup({
   orbitCode: new FormControl(""),
   objectType: new FormControl(""),
 });
+
+/**
+ * Initialize the filters depending on query params on url
+ **/
+function initFiltersFromRouteParams(query: any) {
+  const filterValues = filterForm.getRawValue();
+
+  Object.entries(filterValues).forEach(([key]) => {
+    filterOptions.value[key] = query[key] ? query[key]?.toString() : "";
+    filterForm.get(key.toString()).value = query[key] || "";
+  });
+}
 
 // Define the lists of countries, orbits, and object types here.
 const countries = ref([
@@ -206,28 +246,24 @@ function shuffleImages() {
   shuffledImageUrls.value = SatelliteImages.sort(() => 0.5 - Math.random());
 }
 
-/**
- * Initialize the filters depending on query params on url
- **/
-function initFiltersFromRouteParams(query: any) {
-  const filterValues = filterForm.getRawValue();
-
-  Object.entries(filterValues).forEach(([key]) => {
-    filterOptions.value[key] = query[key] ? query[key]?.toString() : "";
-    filterForm.get(key.toString()).value = query[key] || "";
-  });
-}
+const debouncedSearch = () => {
+  const inputValue = searchInputRef.value?.value || "";
+  searchInputValue$.next(inputValue);
+};
 
 /**
  * Load Filtered and paginated Satellite data
  **/
 function loadSatellitesData(
-  pagination: PaginationQuery = { page: 1, pageSize: 15 }
+  pagination: PaginationQuery = { page: 1, pageSize: 10 }
 ) {
   const paginationOption: Required<PaginationQuery> = {
     page: pagination.page || 1,
-    pageSize: pagination.pageSize || 15,
+    pageSize: pagination.pageSize || 10,
   };
+
+  // Record the start time
+  const startTime = performance.now();
 
   loadingService
     .show()
@@ -239,7 +275,13 @@ function loadSatellitesData(
         )
       )
     )
-    .pipe(finalize(() => loadingService.hide().subscribe()))
+    .pipe(
+      finalize(() => {
+        const endTime = performance.now();
+        loadingTime.value = +(endTime - startTime).toFixed(2);
+        loadingService.hide().subscribe();
+      })
+    )
     .subscribe({
       next: (result) => {
         shuffleImages();
@@ -283,6 +325,38 @@ searchInputValue$.pipe(debounceTime(300)).subscribe(() => {
   router.push(`${currentPath}?${searchParams.toString()}`);
 });
 
+// Function to navigate to the next page
+function goToNextPage() {
+  if (hasNext.value) {
+    currentPage.value++;
+    updateQueryParams();
+  }
+}
+
+// Function to navigate to the previous page
+function goToPreviousPage() {
+  if (hasPrevious.value) {
+    currentPage.value--;
+    updateQueryParams();
+  }
+}
+
+// Function to update the query parameters with the current page value
+function updateQueryParams() {
+  const currentPath = route.path;
+  searchParams.set("page", currentPage.value.toString());
+  router.push(`${currentPath}?${searchParams.toString()}`);
+}
+
+// Watch for changes in satelliteData to update pagination status
+watch(satelliteData, () => {
+  const totalPages = Math.ceil(27000 / 10); // Assuming page size is 10
+
+  // Update pagination status
+  hasPrevious.value = currentPage.value > 1;
+  hasNext.value = currentPage.value < totalPages;
+});
+
 /**
  * Watch for route/params to change and then call the load filters
  **/
@@ -314,5 +388,19 @@ watch(route, () => initFiltersFromRouteParams(route.query), {
   width: 150px;
   height: 150px;
   object-fit: cover;
+}
+
+.input-group {
+  input.is-touched {
+    padding-right: 50px;
+
+    & + span {
+      right: 30px;
+    }
+  }
+}
+
+.min-vh-45 {
+  min-height: 45vh;
 }
 </style>

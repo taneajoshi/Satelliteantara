@@ -1,7 +1,7 @@
 <template>
   <aside
     :class="[
-      'offcanvas offcanvas-start bg-transparent py-4 sidebar-width border-0',
+      'offcanvas offcanvas-start bg-dark py-4 sidebar-width border-0',
       isSidebarOpen ? 'show' : '',
     ]"
     :data-bs-backdrop="!isSidebarOpen"

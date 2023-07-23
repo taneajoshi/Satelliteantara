@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 

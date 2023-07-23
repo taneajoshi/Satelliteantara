@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 
@@ -58,7 +58,7 @@ export default {
         markers: {
           size: 0,
         },
-        formatter: function (seriesName, opts) {
+        formatter: function (seriesName: any, opts: any) {
           return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
         },
         itemMargin: {
