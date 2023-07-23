@@ -11,7 +11,7 @@
       Go to Dashboard
     </router-link>
   </div>
-  <EarthComponent />
+  <EarthComponent class="d-none d-md-block" />
   <LoginBgComponent />
 </template>
 

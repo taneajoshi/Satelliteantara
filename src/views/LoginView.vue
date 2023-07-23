@@ -168,12 +168,12 @@ function login() {
 
 h1 {
   font-family: "Termina Light", sans-serif;
-  font-size: 40px;
-  line-height: 76px;
+  font-size: 36px;
+  line-height: 64px;
 }
 
 .logo {
-  max-width: 15rem;
+  max-width: 14rem;
 }
 
 .login-wrapper {

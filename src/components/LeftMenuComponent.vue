@@ -150,6 +150,7 @@ nav {
 
       span {
         color: $primary !important;
+        font-weight: bold !important;
       }
 
       .icon-wrapper > i {

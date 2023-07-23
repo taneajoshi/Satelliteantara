@@ -36,7 +36,26 @@
   }
 
   .charts-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr)) !important;
+    & > div {
+      padding: 20px 10px !important;
+      height: auto !important;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+  }
+
+  .form-control,
+  .form-select {
+    padding: 8px 15px;
+  }
+
+  // Satellites data
+  .satellite-card {
+    .img-wrapper {
+      height: 100px !important;
+      width: 100px !important;
+    }
   }
 }
 
